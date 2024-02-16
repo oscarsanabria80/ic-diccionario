@@ -1,22 +1,22 @@
 pipeline {
     agent {
-        docker { image 'debian'
-        args '-u root:root'
+        docker {
+            image 'debian'
+            args '-u root:root'
         }
     }
     stages {
         stage('Clone') {
             steps {
-                git branch:'master',url:'https://github.com/oscarsanabria80/ic-diccionario.git'
+                git branch: 'master', url: 'https://github.com/oscarsanabria80/ic-diccionario.git'
             }
         }
         stage('Install') {
             steps {
-                sh 'apt-get update && apt-get install -y aspell-es ' 
+                sh 'apt-get update && apt-get install -y aspell-es '
             }
         }
-        stage('Test')
-        {
+        stage('Test') {
             steps {
                 sh '''
                 export LC_ALL=C.UTF-8
@@ -25,10 +25,10 @@ pipeline {
         }
     }
     post {
-         always {
-          mail to: 'oscarponcedeleonsanabria@gmail.com',
-          subject: "Status of pipeline: ${currentBuild.fullDisplayName}",
-          body: "${env.BUILD_URL} has result ${currentBuild.result}"
+        always {
+            mail to: 'oscar.poncedeleonsanabria80@gmail.com',
+            subject: "Status of pipeline: ${currentBuild.fullDisplayName}",
+            body: "${env.BUILD_URL} has result ${currentBuild.result}"
         }
-      }    
+    }
 }
